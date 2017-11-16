@@ -64,7 +64,7 @@ export default class JoyrideTooltip extends React.Component {
     onRender();
 
     if (showOverlay && allowClicksThruHole) {
-      document.addEventListener('mousemove', this.handleMouseMove, false);
+      document.querySelector('.tl-iframe').contentWindow.document.addEventListener('mousemove', this.handleMouseMove, false);
     }
   }
 
@@ -110,20 +110,20 @@ export default class JoyrideTooltip extends React.Component {
     // If showOverlay changed, we might need to allow clicks in the overlay hole
     if (nextShowOverlay !== showOverlay) {
       if (nextShowOverlay && nextAllowClicksThruHole) {
-        document.addEventListener('mousemove', this.handleMouseMove, false);
+        document.querySelector('.tl-iframe').contentWindow.document.addEventListener('mousemove', this.handleMouseMove, false);
       }
       else {
-        document.removeEventListener('mousemove', this.handleMouseMove, false);
+        document.querySelector('.tl-iframe').contentWindow.document.removeEventListener('mousemove', this.handleMouseMove, false);
       }
     }
 
     // If allowClickInHole changed, we need to enable or disable clicking in the overlay hole
     if (nextAllowClicksThruHole !== allowClicksThruHole) {
       if (nextAllowClicksThruHole) {
-        document.addEventListener('mousemove', this.handleMouseMove, false);
+        document.querySelector('.tl-iframe').contentWindow.document.addEventListener('mousemove', this.handleMouseMove, false);
       }
       else {
-        document.removeEventListener('mousemove', this.handleMouseMove, false);
+        document.querySelector('.tl-iframe').contentWindow.document.removeEventListener('mousemove', this.handleMouseMove, false);
       }
     }
   }
@@ -138,7 +138,7 @@ export default class JoyrideTooltip extends React.Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousemove', this.handleMouseMove, false);
+    document.querySelector('.tl-iframe').contentWindow.document.removeEventListener('mousemove', this.handleMouseMove, false);
   }
 
   getArrowPosition(position) {
@@ -231,7 +231,7 @@ export default class JoyrideTooltip extends React.Component {
     };
 
     styles.hole = {
-      top: Math.round((opts.rect.top - (isFixed ? 0 : document.body.getBoundingClientRect().top)) - holePadding),
+      top: Math.round((opts.rect.top - (isFixed ? 0 : document.querySelector('.tl-iframe').contentWindow.document.body.getBoundingClientRect().top)) - holePadding),
       left: Math.round(opts.rect.left - holePadding),
       width: Math.round(opts.rect.width + (holePadding * 2)),
       height: Math.round(opts.rect.height + (holePadding * 2))
@@ -357,8 +357,8 @@ export default class JoyrideTooltip extends React.Component {
 
   setOpts(props = this.props) {
     const { animate, offsetParentSelector, position, standalone, target, xPos } = props;
-    const offsetParent = document.querySelector(sanitizeSelector(offsetParentSelector));
-    const tooltip = document.querySelector('.joyride-tooltip');
+    const offsetParent = document.querySelector('.tl-iframe').contentWindow.document.querySelector(sanitizeSelector(offsetParentSelector));
+    const tooltip = document.querySelector('.tl-iframe').contentWindow.document.querySelector('.joyride-tooltip');
 
     const opts = {
       classes: ['joyride-tooltip'],
@@ -522,7 +522,7 @@ export default class JoyrideTooltip extends React.Component {
 
     const overlayStyles = {
       cursor: disableOverlay ? 'default' : 'pointer',
-      height: document.body.clientHeight,
+      height: document.querySelector('.tl-iframe').contentWindow.document.body.clientHeight,
       pointerEvents: this.state.mouseOverHole ? 'none' : 'auto',
     };
 

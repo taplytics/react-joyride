@@ -40,7 +40,7 @@ function getBrowser() {
   const isSafari = (Object.prototype.toString.call(window.HTMLElement)
     .indexOf('Constructor') > 0 || !isChrome) && !isOpera && window.webkitAudioContext !== undefined;
   // Internet Explorer 6-11
-  const isIE = Boolean(document.documentMode); // At least IE6
+  const isIE = document.querySelector('.tl-iframe') ? Boolean(document.querySelector('.tl-iframe').contentWindow.document.documentMode) : null; // At least IE6
 
   return isOpera ? 'opera' : isFirefox ? 'firefox' : isChrome ? 'chrome' : isSafari ? 'safari' : isIE ? 'ie' : '';
 }
@@ -65,7 +65,7 @@ export function getRootEl() {
   const { scrollingElement } = document;
 
   if (!scrollingElement) {
-    return ['ie', 'firefox'].indexOf(browser) > -1 ? document.documentElement : document.body;
+    return ['ie', 'firefox'].indexOf(browser) > -1 ? document.querySelector('.tl-iframe').contentWindow.document.documentElement : document.querySelector('.tl-iframe').contentWindow.document.body;
   }
 
   return scrollingElement;

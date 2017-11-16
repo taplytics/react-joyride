@@ -154,7 +154,7 @@ class Joyride extends React.Component {
     /* istanbul ignore else */
     if (keyboardNavigation && type === 'continuous') {
       this.listeners.keyboard = this.handleKeyboardNavigation;
-      document.body.addEventListener('keydown', this.listeners.keyboard);
+      document.querySelector('.tl-iframe').contentWindow.document.body.addEventListener('keydown', this.listeners.keyboard);
     }
 
     window.addEventListener('touchstart', function setHasTouch() {
@@ -237,13 +237,13 @@ class Joyride extends React.Component {
       && nextProps.type === 'continuous'
     ) {
       this.listeners.keyboard = this.handleKeyboardNavigation;
-      document.body.addEventListener('keydown', this.listeners.keyboard);
+      document.querySelector('.tl-iframe').contentWindow.document.body.addEventListener('keydown', this.listeners.keyboard);
     }
     else if (
       this.listeners.keyboard && keyboardNavigation &&
       (!nextProps.keyboardNavigation || nextProps.type !== 'continuous')
     ) {
-      document.body.removeEventListener('keydown', this.listeners.keyboard);
+      document.querySelector('.tl-iframe').contentWindow.document.body.removeEventListener('keydown', this.listeners.keyboard);
       delete this.listeners.keyboard;
     }
   }
@@ -398,14 +398,14 @@ class Joyride extends React.Component {
 
     /* istanbul ignore else */
     if (this.listeners.keyboard) {
-      document.body.removeEventListener('keydown', this.listeners.keyboard);
+      document.querySelector('.tl-iframe').contentWindow.document.body.removeEventListener('keydown', this.listeners.keyboard);
     }
 
     /* istanbul ignore else */
     if (Object.keys(this.listeners.tooltips).length) {
       Object.keys(this.listeners.tooltips)
         .map(key => ({
-          el: document.querySelector(key),
+          el: document.querySelector('.tl-iframe').contentWindow.document.querySelector(key),
           event: this.listeners.tooltips[key].event,
           cb: this.listeners.tooltips[key].cb,
           key
@@ -572,7 +572,7 @@ class Joyride extends React.Component {
     });
 
     const key = data.trigger || sanitizeSelector(data.selector);
-    const el = document.querySelector(key);
+    const el = document.querySelector('.tl-iframe').contentWindow.document.querySelector(key);
 
     if (!el) {
       return;
@@ -678,7 +678,7 @@ class Joyride extends React.Component {
       return null;
     }
 
-    const el = document.querySelector(sanitizeSelector(step.selector));
+    const el = document.querySelector('.tl-iframe').contentWindow.document.querySelector(sanitizeSelector(step.selector));
 
     if (!el) {
       logger({
@@ -703,7 +703,7 @@ class Joyride extends React.Component {
   getElementDimensions() {
     const { shouldRenderTooltip, standaloneData } = this.state;
     const displayTooltip = standaloneData ? true : shouldRenderTooltip;
-    const el = document.querySelector(displayTooltip ? '.joyride-tooltip' : '.joyride-beacon');
+    const el = document.querySelector('.tl-iframe').contentWindow.document.querySelector(displayTooltip ? '.joyride-tooltip' : '.joyride-beacon');
 
     let height = 0;
     let width = 0;
@@ -731,14 +731,14 @@ class Joyride extends React.Component {
     const { offsetParentSelector, scrollOffset, steps } = this.props;
     const step = steps[index];
     const target = this.getStepTargetElement(step);
-    const offsetParent = document.querySelector(sanitizeSelector(offsetParentSelector));
+    const offsetParent = document.querySelector('.tl-iframe').contentWindow.document.querySelector(sanitizeSelector(offsetParentSelector));
 
     if (!target) {
       return 0;
     }
 
     const rect = getOffsetBoundingClientRect(target, offsetParent);
-    const targetTop = rect.top + (window.pageYOffset || document.documentElement.scrollTop);
+    const targetTop = rect.top + (window.pageYOffset || document.querySelector('.tl-iframe').contentWindow.document.documentElement.scrollTop);
     const position = this.calcPosition(step);
     let scrollTo = 0;
 
@@ -831,7 +831,7 @@ class Joyride extends React.Component {
         });
       }
       else {
-        document.querySelector('.joyride-tooltip__close').click();
+        document.querySelector('.tl-iframe').contentWindow.document.querySelector('.joyride-tooltip__close').click();
       }
     }
   };
@@ -876,7 +876,7 @@ class Joyride extends React.Component {
     if (el.className.indexOf('joyride-') === 0) {
       e.preventDefault();
       e.stopPropagation();
-      const tooltip = document.querySelector('.joyride-tooltip');
+      const tooltip = document.querySelector('.tl-iframe').contentWindow.document.querySelector('.joyride-tooltip');
       let newIndex = index + (dataType === 'back' ? -1 : 1);
 
       if (dataType === 'skip') {
@@ -963,7 +963,7 @@ class Joyride extends React.Component {
     const step = standaloneData || (steps[index] || {});
     const displayTooltip = standaloneData ? true : shouldRenderTooltip;
     const target = this.getStepTargetElement(step);
-    const offsetParent = document.querySelector(sanitizeSelector(offsetParentSelector));
+    const offsetParent = document.querySelector('.tl-iframe').contentWindow.document.querySelector(sanitizeSelector(offsetParentSelector));
 
     logger({
       type: `joyride:calcPlacement${this.getRenderStage()}`,
@@ -1044,7 +1044,7 @@ class Joyride extends React.Component {
     const scrollingElement = getRootEl();
     const scrollingElementRect = scrollingElement.getBoundingClientRect();
     const target = this.getStepTargetElement(step);
-    const offsetParent = document.querySelector(sanitizeSelector(offsetParentSelector));
+    const offsetParent = document.querySelector('.tl-iframe').contentWindow.document.querySelector(sanitizeSelector(offsetParentSelector));
     const rect = getOffsetBoundingClientRect(target, offsetParent);
     const { height, width = DEFAULTS.minWidth } = this.getElementDimensions();
     let position = step.position || DEFAULTS.position;
