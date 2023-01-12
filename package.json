@@ -77,7 +77,7 @@
     "image-webpack-loader": "^3.4.2",
     "jest-cli": "^21.2.1",
     "jsdom": "^11.3.0",
-    "nightwatch": "^0.9.16",
+    "nightwatch": "^2.6.10",
     "node-sass": "4.6.1",
     "postcss-cli": "^4.1.1",
     "postcss-loader": "^2.0.8",
